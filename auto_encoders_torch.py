@@ -6,14 +6,18 @@ import torch.nn.functional as F
 import torch.optim as optim 
 import numpy as np 
 import math 
+from tqdm.notebook import tqdm
 aft = time.time()
 print(f'Imports complete in {aft-bef} seconds')
 del(aft, bef)
 
 N_bottleNeck = 10
 flattened_conv2lin = 20
+VERBOSE = True
 class AutoEncoder(nn.Module):
+     # The autoencoder network and its functions
      def __init__(self):
+          # init model architecture
           super(AutoEncoder, self).__init__()
           self.enc_conv1 = nn.Conv2d(1, 32, kernel_size=(2,2))
           self.enc_conv2 = nn.Conv2d(32, 64, kernel_size=(2,2))
@@ -28,12 +32,15 @@ class AutoEncoder(nn.Module):
           self.init_weights()
 
      def full_pass(self, x):
+          # pass end to end for training autoencoder
           pass
 
      def enc_pass(self, x):
+          # pass end to bottle neck for compressing data
           pass
 
      def dec_pass(self, x):
+          # pass bottle neck to end for recreating data
           pass
 
      def init_weights(self):
@@ -43,6 +50,41 @@ class AutoEncoder(nn.Module):
                if conditions:
                     nn.init.kaiming_uniform_(module.weight)
           print('Network initialized with kaiming uniform weights.')
-               
+
+     def train(self, train_loader, optimizer, loss_fn, epochs = 1):
+          # trains the network in the train_loader data
+          # returns train_loss and train_accuracy
+          self.loss_fn = loss_fn
+          self.optimizer = optimizer
+          if torch.cuda.is_available():
+               self.device = torch.device('cuda:0')
+          else:
+               self.device = torch.device('cpu')
+          self.cpu = torch.device('cpu')
+          for _ in range(epochs):
+               temp_loss_list = []
+               for data in tqdm(train_loader, disable = not(VERBOSE)):
+                    X, y = data
+                    X, y = X.to(self.device), y.to(self.device)
+                    self.optimizer.zero_grad()
+                    out = self.full_pass(X)
+                    loss = self.loss_fn(out, y)
+                    temp_loss_list.append(loss)
+                    loss.backward()
+                    self.optimizer.step()
+          loss = 
+          return (loss, accuracy)
+
+     
+     def test(self, test_loader):
+          # tests the network on the test_loader data
+          # returns test_loss and test_accuracy
+          with torch.no_grad():
+               for data in tqdm(test_loader, disable = not(VERBOSE)):
+                    X, y = data
+                    X, y = X.to(self.device), y.to(self.device)
+
+          return (loss, accuracy)
+
 auto = AutoEncoder()
-print(auto)
+print((auto))
