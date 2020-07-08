@@ -6,3 +6,4 @@ Deep generative models especially Auto Encoders and VAEs in both TensorFlow and 
 - Flattened images.
 
 #### Model architecture
+![flat_encoder_decoder](./images/architecture.png)
