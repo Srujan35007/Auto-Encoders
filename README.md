@@ -1,6 +1,6 @@
 # Auto-Encoders
-Status : Incomplete
-Deep generative models especially Auto Encoders and VAEs in both TensorFlow and PyTorch.
+Deep generative models especially Auto Encoders and VAEs in both TensorFlow and PyTorch.<br>
+Status : Incomplete<br>
 
 ## Auto Encoders basic
 - MNIST dataset.
