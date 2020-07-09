@@ -1,4 +1,5 @@
-# Auto-Encoders || Incomplete
+# Auto-Encoders
+Status : Incomplete
 Deep generative models especially Auto Encoders and VAEs in both TensorFlow and PyTorch.
 
 ## Auto Encoders basic
