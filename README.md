@@ -7,7 +7,8 @@ Pytorch model - Done.<br>
 Tensorflow model - In progress. <br>
 - MNIST dataset.
 - Flattened images.
-- Refer [auto_encoder_linear_torch.ipynb](./auto_encoder_linear_torch.ipynb) for code.
+- Refer [auto_encoder_linear_torch.ipynb](./auto_encoder_linear_torch.ipynb) for Pytorch code.
+- Refer [auto_encoder_linear_TF.py](./auto_encoder_linear_TF.py) for Tensorflow code.
 
 #### Model architecture
 ![flat_encoder_decoder](./images/linear.png)
