@@ -4,6 +4,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from torchsummary import summary
+import matplotlib.pyplot as plt
 import numpy as np
 aft = time.time()
 print(f'Imports complete in {aft-bef} seconds')
@@ -68,6 +70,7 @@ class AutoEncoder(nn.Module):
     def train(self, train_loader, optimizer, loss_fn, epochs=1):
         # trains the network on the train_loader data
         # returns train_loss and train_accuracy
+
         self.loss_fn = loss_fn
         self.optimizer = optimizer
         if torch.cuda.is_available():
@@ -75,6 +78,8 @@ class AutoEncoder(nn.Module):
         else:
             self.device = torch.device('cpu')
         self.cpu = torch.device('cpu')
+
+        # The train step
         for _ in range(epochs):
             temp_loss_list = []
             for data in tqdm(train_loader, disable=not(VERBOSE)):
@@ -100,5 +105,75 @@ class AutoEncoder(nn.Module):
 
         return (loss, accuracy)
 
-t = torch.rand(28, 28)
-net = AutoEncoder()
+PATIENCE = 5
+PLT_SHOW = 5
+VERBOSE = False
+SAVE_FILE_NAME = 'model.pt' # None if you don't wanna save the model (.pt file)
+BATCH_SIZE = 30
+train_data =            # Can be a numpy list
+test_data =             # Can be a numpy list
+
+# Empty initializations
+train_flag = True
+current_patience = PATIENCE
+test_loss_list = []
+train_loss_list = []
+test_acc_list = []
+train_acc_list = []
+epoch_count = 0
+
+# Start training 
+while train_flag:
+    epoch_count += 1
+    print(f'\nEpoch {epoch_count}')
+    bef = time.time()
+    train_batch = make_batches(train_data, BATCH_SIZE)
+    train_loss = net.train(train_batch, verbose=VERBOSE)
+    aft = time.time()
+    test_loss = net.test(test_data, verbose=VERBOSE)
+    if not VERBOSE:
+        print(f'Training done in {round((aft-bef)/60, 1)} mins.')
+        print(f'Testing done in {round((time.time()-aft)/60, 1)} mins.')
+    print(f'train_loss : {train_loss} \t test_loss : {test_loss}')
+    test_loss_list.append(test_loss)
+    train_loss_list.append(train_loss)
+    
+    if SAVE_FILE_NAME != None:
+    # If the user wants to save the model
+        if test_loss == min(test_loss_list):
+        # If the current loss is the loss minima
+            if Path(f'./{SAVE_FILE_NAME}').is_file():
+                os.remove(f'./{SAVE_FILE_NAME}')
+                net.to(cpu)
+                torch.save(net, f'./{SAVE_FILE_NAME}')
+                net.to(device)
+                if VERBOSE:
+                    print(f'New version saved at epoch : {epoch_count} as <{SAVE_FILE_NAME}>')
+            else:
+                net.to(cpu)
+                torch.save(net, f'./{SAVE_FILE_NAME}')
+                net.to(device)
+                if VERBOSE:
+                    print(f'Model saved at epoch : {epoch_count} as <{SAVE_FILE_NAME}>')
+    else:
+        pass
+
+    if test_loss == min(test_loss_list):
+    # Early stopping
+        current_patience = PATIENCE
+    else:
+        current_patience -= 1
+    
+    if current_patience <= 0:
+        train_flag = False
+        print(f'Training terminated.')
+    
+    if epoch_count % PLT_SHOW == 0:
+    # Show metrics
+        plot_metrics(test_loss_list, train_loss_list)
+
+min_loss = min(test_loss_list)
+min_loss_at = test_loss_list.index(min_loss) + 1
+plot_metrics(test_loss_list, train_loss_list)
+print(f'Loss minima at {min_loss_at}')
+rename_trained_model(SAVE_FILE_NAME)
