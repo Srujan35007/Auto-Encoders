@@ -15,11 +15,47 @@ N_bottleNeck = 10 # N Dimensional compressed sequence
 flattened_conv2lin = 2592
 
 
+
 def get_flat_shape(shape_):
     prod = 1
     for elem in shape_:
         prod = prod * elem
     return prod
+
+def plot_metrics(test_loss_list, train_loss_list):
+    epoch_list = [i+1 for i in range(len(train_loss_list))]
+    plt.style.use('fivethirtyeight')
+    plt.plot(epoch_list, test_loss_list,
+             color='blue', linewidth=0.8,
+             label='test_loss'
+            )
+    plt.plot(epoch_list, train_loss_list,
+             color='red', linewidth=0.8,
+             label='train_loss'
+            )
+    plt.title('Loss metrics')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.show()
+
+def make_batches(train_data, batch_size):
+    batch = []
+    return batch
+
+def rename_trained_model(save_file_name):
+    if save_file_name.endswith('.pt') and ' ' not in save_file_name:
+        split_ = save_file_name.split('.')
+        file_name = split_[0]
+        min_loss = str(min(test_loss_list)).replace('.', '_')
+        renamed_file_name = file_name + f'__loss__{min_loss}.pt'
+        os.rename(f'./{save_file_name}', f'./{renamed_file_name}')
+        print(f'Model saved as <{renamed_file_name}>')
+    else:
+        raise TypeError('Use a .pt save file\
+             and make sure there are no spaces in the save file name')
+
+
 
 class AutoEncoder(nn.Module):
     # The autoencoder network and its functions
