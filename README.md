@@ -2,8 +2,8 @@
 Deep generative models especially Auto Encoders and VAEs in both TensorFlow and PyTorch.<br>
 
 ## Auto Encoders Linear<br>
-**Status:**
-**Pytorch model** - Done.
+### **Status:**<br>
+**Pytorch model** - Done.<br>
 **Tensorflow model** - In progress. <br>
 - MNIST dataset.
 - Flattened images.
@@ -25,8 +25,8 @@ Deep generative models especially Auto Encoders and VAEs in both TensorFlow and 
 - Convolutional neural networks may work better than these linear networks.<br>
 ___
 ## Convolutional Auto Encoders<br>
-**Status:**
-**Pytorch Model** - Done.
+### **Status:**<br>
+**Pytorch Model** - Done.<br>
 **Tensorflow Model** - In progress.<br>
 - Refer [auto_encoders_cnn_torch.py](./auto_encoders_cnn_torch.py) for Pytorch code.
 - Refer [auto_encoders_cnn_TF.py](./auto_encoders_cnn_TF.py) for Tensorflow code.
