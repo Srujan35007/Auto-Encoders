@@ -30,3 +30,6 @@ ___
 **Tensorflow Model** - In progress.<br>
 - Refer [auto_encoders_cnn_torch.py](./auto_encoders_cnn_torch.py) for Pytorch code.
 - Refer [auto_encoders_cnn_TF.py](./auto_encoders_cnn_TF.py) for Tensorflow code.
+
+#### Model architecture
+![cnn_auto_encoder](./images/cnn.png)
